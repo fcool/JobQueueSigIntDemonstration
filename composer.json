@@ -1,0 +1,33 @@
+{
+    "name": "misc/jobqueue-testing-and-development",
+    "description": "Temporarily existing only to test JobQueue functionality",
+    "license": "MIT",
+    "config": {
+        "vendor-dir": "Packages/Libraries",
+        "bin-dir": "bin"
+    },
+    "require": {
+        "acme/example": "dev-master",
+        "flowpack/jobqueue-common": "dev-feature/allow-interruption-of-workers as 3.1.0",
+        "flowpack/jobqueue-doctrine": "dev-master"
+    },
+    "require-dev": {
+        "neos/buildessentials": "^6.2",
+        "neos/behat": "dev-master",
+        "phpunit/phpunit": "~8.1",
+        "mikey179/vfsstream": "~1.6"
+    },
+    "repositories": [
+        { "type": "path", "url": "./DistributionPackages/*" },
+        { "type": "vcs",  "url": "https://github.com/fcool/jobqueue-common.git" }
+    ],
+    "suggest": {
+        "ext-pdo_sqlite": "For running functional tests out-of-the-box this is required"
+    },
+    "scripts": {
+        "post-update-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-install-cmd": "Neos\\Flow\\Composer\\InstallerScripts::postUpdateAndInstall",
+        "post-package-update": "Neos\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall",
+        "post-package-install": "Neos\\Flow\\Composer\\InstallerScripts::postPackageUpdateAndInstall"
+    }
+}

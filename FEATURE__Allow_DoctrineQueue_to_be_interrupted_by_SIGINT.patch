@@ -1,0 +1,45 @@
+Index: Packages/Application/Flowpack.JobQueue.Doctrine/Classes/Queue/DoctrineQueue.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Packages/Application/Flowpack.JobQueue.Doctrine/Classes/Queue/DoctrineQueue.php	(revision 2624e53f906e6c7dc952df9896fda0082b2ace0c)
++++ Packages/Application/Flowpack.JobQueue.Doctrine/Classes/Queue/DoctrineQueue.php	(date 1603589428200)
+@@ -17,6 +17,8 @@
+ use Doctrine\DBAL\DriverManager;
+ use Doctrine\DBAL\Exception\InvalidArgumentException;
+ use Doctrine\DBAL\Exception\TableNotFoundException;
++use Flowpack\JobQueue\Common\InterruptException;
++use Flowpack\JobQueue\Common\Job\JobManager;
+ use Flowpack\JobQueue\Common\Queue\Message;
+ use Flowpack\JobQueue\Common\Queue\QueueInterface;
+ use Neos\Flow\Annotations as Flow;
+@@ -62,6 +64,12 @@
+      */
+     protected $tableName;
+ 
++    /**
++     * @Flow\Inject
++     * @var JobManager
++     */
++    protected $jobManager;
++
+     /**
+      * @param string $name
+      * @param array $options
+@@ -181,6 +189,7 @@
+      * @param int $timeout
+      * @return Message
+      * @throws DBALException
++     * @throws InterruptException
+      */
+     protected function reserveMessage(?int $timeout = null): ?Message
+     {
+@@ -204,6 +213,7 @@
+             if (time() - $startTime >= $timeout) {
+                 return null;
+             }
++            $this->jobManager->interruptMe();
+             sleep($this->pollInterval);
+         } while (true);
+ 

@@ -1,0 +1,12 @@
+Flowpack:
+  JobQueue:
+    Common:
+      queues:
+        'test':
+          className: 'Flowpack\JobQueue\Doctrine\Queue\DoctrineQueue'
+          maximumNumberOfReleases: 5
+          releaseOptions:
+            delay: 60
+          options:
+            defaultTimeout: 5
+
